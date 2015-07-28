@@ -1,3 +1,4 @@
+'''
 from PIL import Image
 from cStringIO import StringIO
 import base64
@@ -31,3 +32,4 @@ def dhash(encoded_image, hash_size = 8):
             decimal_value = 0
 
     return ''.join(hex_string)
+'''

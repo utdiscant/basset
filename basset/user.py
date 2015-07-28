@@ -1,10 +1,10 @@
 from functools import partial
 import copy
 
-from contact_utils.info import Info
+from info import Info
 
 
-class Contact():
+class User():
     """
     This class represents a contact
 
@@ -23,9 +23,6 @@ class Contact():
       * postal
         * postal_address (string)
         * label (string)
-      * organization
-        * org_name (string)
-        * org_title (string)
       * custom
         * key (string)
         * value (string)
@@ -70,6 +67,24 @@ class Contact():
         info_instance = Info(type=info_type, **kwargs)
         self.__add_info_instance(info_instance)
         return info_instance
+
+    def add_name(self, given_name=None, family_name=None, full_name=None):
+        return self.add_info(info_type="name", given_name=given_name, family_name=family_name, full_name=full_name)
+
+    def add_email(self, address=None):
+        return self.add_info(info_type="email", address=address)
+
+    def add_social_profile(self, handle=None, site=None):
+        return self.add_info(info_type="social_profile", handle=handle, site=site)
+
+    def add_phone(self, number=None, country=None):
+        return self.add_info(info_type="phone", number=number, country=country)
+
+    def add_postal_address(self, postal_address=None):
+        return self.add_info(info_type="postal_address", postal_address=postal_address)
+
+    def add_credit_card(self, cardno=None):
+        return self.add_info(info_type="credit_card", cardno=cardno)
 
     def get_info(self, info_type):
         if info_type not in Info.TYPES:

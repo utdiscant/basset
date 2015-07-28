@@ -2,7 +2,7 @@ import requests
 from contact_mapper import ObjectContactMapperFormat, JSONContactMapperFormat, ContactMapper
 
 
-def compute_trust(contact, api_key):
+def compute_trust(user, tracking_data=None):
     api_data = dict()
 
     # Add API key

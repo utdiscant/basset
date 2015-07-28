@@ -2,7 +2,7 @@ from behave import *
 import requests
 
 from contact_utils.contact_mapper import JSONContactMapperFormat, ObjectContactMapperFormat, ContactMapper
-from contact import Contact
+from contact import User
 
 
 @given('we have the testing database')
@@ -32,7 +32,7 @@ def step_impl(context, from_format, to_format):
 @when('we input a contact in {format} format into the converter')
 def step_impl(context, format):
     if format == "Contact":
-        input_contact = Contact()
+        input_contact = User()
         input_contact.add_info("email", address="utdiscant@gmail.com", label="work")
         input_contact.add_info("name", givenName="David", familyName="Kofoed Wind", fullName="David Kofoed Wind")
         input_contact.add_info("organization", name="Onetact", title="CTO")

@@ -1,43 +1,43 @@
 # Methods for converting between various contact formats
-from contact_utils import Contact, Info
-from contact_utils.exceptions import ContactConversionException
+from user import User, Info
+from exceptions import UserConversionException
 
 
-class ContactMapper():
+class UserMapper():
     def __init__(self, input_format, output_format):
         self.input_format = input_format()
         self.output_format = output_format()
 
     def convert(self, input_data):
         try:
-            contact_object = self.input_format.to_contact_object(input_data)
-            return self.output_format.from_contact_object(contact_object)
+            user_object = self.input_format.to_user_object(input_data)
+            return self.output_format.from_user_object(user_object)
         except:
-            raise ContactConversionException
+            raise UserConversionException
 
     def reverse_mapper(self):
-        return ContactMapper(input_format=self.output_format, output_format=self.input_format)
+        return UserMapper(input_format=self.output_format, output_format=self.input_format)
 
 
-class ContactMapperFormat():
+class UserMapperFormat():
     def __init__(self):
         pass
 
 
-class ObjectContactMapperFormat(ContactMapperFormat):
+class ObjectUserMapperFormat(UserMapperFormat):
     @staticmethod
-    def to_contact_object(input_data):
+    def to_user_object(input_data):
         return input_data
 
     @staticmethod
-    def from_contact_object(input_data):
+    def from_user_object(input_data):
         return input_data
 
 
-class GraphContactMapperFormat(ContactMapperFormat):
+class GraphUserMapperFormat(UserMapperFormat):
     @staticmethod
-    def to_contact_object(graph_object):
-        resulting_contact = Contact()
+    def to_user_object(graph_object):
+        resulting_user = User()
 
         def extract_node_info_type(info_node):
             labels = info_node.labels
@@ -46,24 +46,24 @@ class GraphContactMapperFormat(ContactMapperFormat):
 
         for node in graph_object.nodes:
             if "info" in node.labels:
-                resulting_contact.add_info(info_type=extract_node_info_type(node), **node.properties)
-        return resulting_contact
+                resulting_user.add_info(info_type=extract_node_info_type(node), **node.properties)
+        return resulting_user
 
     @staticmethod
-    def from_contact_object(contact_object):
+    def from_user_object(user_object):
         raise NotImplementedError
 
 
-class JSONContactMapperFormat(ContactMapperFormat):
+class JSONUserMapperFormat(UserMapperFormat):
     @staticmethod
-    def to_contact_object(json_contact):
-        contact_object = Contact(**json_contact)
-        return contact_object
+    def to_user_object(json_user):
+        user_object = User(**json_user)
+        return user_object
 
     @staticmethod
-    def from_contact_object(contact_object):
-        json_contact = dict()
-        json_contact['flags'] = contact_object.flags
+    def from_user_object(user_object):
+        json_user = dict()
+        json_user['flags'] = user_object.flags
 
         def recursive_to_dict(something):
             if isinstance(something, list):
@@ -75,6 +75,6 @@ class JSONContactMapperFormat(ContactMapperFormat):
             else:
                 return something
 
-        json_contact.update(recursive_to_dict(contact_object.info))
+        json_user.update(recursive_to_dict(user_object.info))
 
-        return json_contact
+        return json_user

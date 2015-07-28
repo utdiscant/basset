@@ -1,11 +1,17 @@
 import basset
 
-my_user = basset.Contact()
-my_user.add_name(given_name = "David",
-                 family_name = "Wind",
-                 full_name = "David Kofoed Wind")
-my_user.add_email(address = "utdiscant@gmail.com")
+basset.apikey = "MEGALOL"
 
-basset.send_interaction(contact=my_user,
-                        transaction_type="signup",
-                        api_key="test")
+my_user = basset.User()
+my_user.add_name(given_name="David",
+                 family_name="Wind",
+                 full_name="David Kofoed Wind")
+my_user.add_email(address="utdiscant@gmail.com")
+my_user.add_social_profile(site="facebook",
+                           handle="davidwind")
+my_user.add_phone(number="60 67 70 42",
+                  country="DK")
+my_user.add_postal_address(address="Reventlowsgade 10, st. tv., 1651 København V")
+my_user.add_credit_card(cardno="4571446721710990")
+
+basset.compute_trust(user=my_user)

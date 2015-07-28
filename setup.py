@@ -7,4 +7,9 @@ setup(name='basset',
       author='David Kofoed Wind',
       author_email='utdiscant@gmail.com',
       packages=['basset'],
+      install_requires=[
+          'requests',
+          'copy',
+          'functools'
+      ],
       zip_safe=False)

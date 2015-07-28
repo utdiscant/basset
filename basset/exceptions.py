@@ -1,2 +1,2 @@
-class ContactConversionException(Exception):
+class UserConversionException(Exception):
     pass
