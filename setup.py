@@ -8,7 +8,6 @@ setup(name='basset',
       author_email='utdiscant@gmail.com',
       packages=['basset'],
       install_requires=[
-          'requests',
-          'functools'
+          'requests'
       ],
       zip_safe=False)
