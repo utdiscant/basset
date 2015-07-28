@@ -2,10 +2,6 @@
 from contact_utils import Contact, Info
 from contact_utils.exceptions import ContactConversionException
 
-#    from_format = ObjectContactMapperFormat #ContactMapperFormat(from_format)
-#    to_format   = JSONContactMapperFormat #(to_format)
-#    context.mapper = ContactMapper(from_format, to_format)
-
 
 class ContactMapper():
     def __init__(self, input_format, output_format):
@@ -29,19 +25,22 @@ class ContactMapperFormat():
 
 
 class ObjectContactMapperFormat(ContactMapperFormat):
-    def to_contact_object(self, input_data):
+    @staticmethod
+    def to_contact_object(input_data):
         return input_data
 
-    def from_contact_object(self, input_data):
+    @staticmethod
+    def from_contact_object(input_data):
         return input_data
 
 
 class GraphContactMapperFormat(ContactMapperFormat):
-    def to_contact_object(self, graph_object):
+    @staticmethod
+    def to_contact_object(graph_object):
         resulting_contact = Contact()
 
-        def extract_node_info_type(node):
-            labels = node.labels
+        def extract_node_info_type(info_node):
+            labels = info_node.labels
             info_types = Info.TYPES
             return filter(lambda l: l in info_types, labels)[0]
 
@@ -50,16 +49,19 @@ class GraphContactMapperFormat(ContactMapperFormat):
                 resulting_contact.add_info(info_type=extract_node_info_type(node), **node.properties)
         return resulting_contact
 
-    def from_contact_object(self, contact_object):
+    @staticmethod
+    def from_contact_object(contact_object):
         raise NotImplementedError
 
 
 class JSONContactMapperFormat(ContactMapperFormat):
-    def to_contact_object(self, json_contact):
+    @staticmethod
+    def to_contact_object(json_contact):
         contact_object = Contact(**json_contact)
         return contact_object
 
-    def from_contact_object(self, contact_object):
+    @staticmethod
+    def from_contact_object(contact_object):
         json_contact = dict()
         json_contact['flags'] = contact_object.flags
 
