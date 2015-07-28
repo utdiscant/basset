@@ -1,0 +1,2 @@
+class ContactConversionException(Exception):
+    pass
