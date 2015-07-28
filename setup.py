@@ -9,7 +9,6 @@ setup(name='basset',
       packages=['basset'],
       install_requires=[
           'requests',
-          'copy',
           'functools'
       ],
       zip_safe=False)

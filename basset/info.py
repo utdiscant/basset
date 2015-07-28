@@ -5,19 +5,17 @@ class Info():
     TYPES = ['name',
              'email',
              'phone',
-             'address',
-             'organization',
-             'custom',
-             'photo']
+             'postal_address',
+             'social_profile',
+             'credit_card']
 
     CONSTRAINTS = {'name': ['given_name', 'family_name', 'full_name'],
-                   'phone': ['country_code', 'number', 'label'],
+                   'phone': ['country', 'number', 'label'],
                    'email': ['address', 'label'],
-                   'address': ['address', 'label'],
-                   'organization': ['title', 'org_name']}
+                   'address': ['address', 'label']}
 
     def __init__(self, **kwargs):
-        self.info_type = kwargs.pop('type', None)
+        self.info_type = kwargs.pop('info_type', None)
         if self.info_type is None:
             raise TypeError('Info type not provided')
         if self.info_type not in Info.TYPES:

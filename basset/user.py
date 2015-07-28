@@ -29,7 +29,6 @@ class User():
     """
 
     def __init__(self, **kwargs):
-        self.flags = kwargs.pop('flags', [])
         self.info = {}
 
         if kwargs:
@@ -38,6 +37,7 @@ class User():
         # Syntactic sugar
         # ---------------
         # This adds adder-methods like add_organization(**kwargs)
+        '''
         for info_type in Info.TYPES:
             setattr(self, 'add_' + info_type, partial(self.add_info, type=info_type))
 
@@ -48,6 +48,7 @@ class User():
         # This adds exists-methods like has_organization()
         for info_type in Info.TYPES:
             setattr(self, 'has_' + info_type, partial(self.has_info, type=info_type))
+        '''
 
     def __eq__(self, other):
         for info in self:
@@ -69,6 +70,7 @@ class User():
         return info_instance
 
     def add_name(self, given_name=None, family_name=None, full_name=None):
+        print "HERE"
         return self.add_info(info_type="name", given_name=given_name, family_name=family_name, full_name=full_name)
 
     def add_email(self, address=None):
@@ -131,7 +133,8 @@ class User():
     def __add_info_from_kwargs(self, **kwargs):
         for key, value in kwargs.items():
             if key in Info.TYPES:
-                self.__add_info_instance(self.__make_info_instance(key, value))
+                info_instance = self.__make_info_instance(key, value)
+                self.__add_info_instance(info_instance)
             else:
                 raise TypeError("We have not thought about this info_type %s" % key)
 
@@ -139,4 +142,5 @@ class User():
         if isinstance(value, list):
             return [self.__make_info_instance(key, v) for v in value]
         else:
-            return Info(key, **value)
+            res = Info(**value)
+            return res

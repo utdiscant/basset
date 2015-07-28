@@ -63,7 +63,6 @@ class JSONUserMapperFormat(UserMapperFormat):
     @staticmethod
     def from_user_object(user_object):
         json_user = dict()
-        json_user['flags'] = user_object.flags
 
         def recursive_to_dict(something):
             if isinstance(something, list):

@@ -1,42 +1,40 @@
 import requests
-from contact_mapper import ObjectContactMapperFormat, JSONContactMapperFormat, ContactMapper
+import basset
+from contact_mapper import ObjectUserMapperFormat, JSONUserMapperFormat, UserMapper
 
+api_domain = "http://api.basset.io"
 
 def compute_trust(user, tracking_data=None):
     api_data = dict()
 
     # Add API key
-    api_data['api_key'] = api_key
+    if basset.apikey is None:
+        print "You need to set the API key first"
+        return None
+    else:
+        api_data['api_key'] = basset.apikey
 
     # Add user data
-    from_format = ObjectContactMapperFormat
-    to_format = JSONContactMapperFormat
-    mapper = ContactMapper(from_format, to_format)
-    api_data['user_data'] = mapper.convert(contact)
+    from_format = ObjectUserMapperFormat
+    to_format = JSONUserMapperFormat
+    mapper = UserMapper(from_format, to_format)
+    api_data['user_data'] = mapper.convert(user)
 
-    response = requests.post(url="http://www.basset.io/trust", data=api_data)
+    # Add tracking data if we have any
+    if tracking_data is not None:
+        api_data['tracking_data'] = tracking_data
 
-    return response
+    response = requests.post(url=api_domain + "/trust", data=api_data)
+    print "Response"
+    print response
 
+    result = response.json()
+    print "Result"
+    print result
 
-def send_interaction(contact, transaction_type, tracking_data, api_key):
-    api_data = dict()
-
-    # Add API key
-    api_data['api_key'] = api_key
-
-    # Add user data
-    from_format = ObjectContactMapperFormat
-    to_format = JSONContactMapperFormat
-    mapper = ContactMapper(from_format, to_format)
-    api_data['user_data'] = mapper.convert(contact)
-
-    # Add transaction type
-    api_data['transaction_type'] = transaction_type
-
-    # Add tracking data
-    api_data['tracking_data'] = tracking_data
-
-    response = requests.put(url="http://www.basset.io/interaction", data=api_data)
+    # Work with response
+    # Check the status
+    # Did you have a valid API key?
+    # Did you get a yes or a no?
 
     return response
